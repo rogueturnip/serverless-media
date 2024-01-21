@@ -17,6 +17,7 @@
     "better-sqlite3": "^9.2.2",
     "dotenv": "^16.3.2",
     "kysely": "^0.27.2",
+    "kysely-codegen": "^0.11.0",
     "pg": "^8.11.3",
     "sharp": "^0.33.1",
     "uuid": "^9.0.1",
