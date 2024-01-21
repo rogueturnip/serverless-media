@@ -95,13 +95,13 @@ export const main: S3Handler = async (event: S3Event) => {
         const body = getObjectResponse.Body as Readable;
         const metadata = getObjectResponse.Metadata;
         await db
-          .insertInto("media")
+          .insertInto("user_images")
           .values({
             id: metadata["image-id"],
-            created_by: parseInt(metadata["created-by"]),
+            created_by: metadata["created-by"],
+            building_id: metadata["building-id"],
             original_key: originalKey.replace("uploads", "images"),
             resized_key: null,
-            status: "active",
           })
           .execute();
 
@@ -126,9 +126,10 @@ export const main: S3Handler = async (event: S3Event) => {
           })
         );
         await db
-          .updateTable("media")
+          .updateTable("user_images")
           .set({ resized_key: resizedKey })
           .where("id", "=", metadata["image-id"])
+          .where("building_id", "=", metadata["building-id"])
           .execute();
       } catch (error) {
         console.error("Error processing file", originalKey, error);

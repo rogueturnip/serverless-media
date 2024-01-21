@@ -7,13 +7,13 @@ import { s3Config } from "src/config";
 const s3Client = new S3Client(s3Config);
 
 export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent) => {
-  const { pathParameters: { id = null, imageId = null } = {} } = event;
+  const { pathParameters: { imageId = null } = {} } = event;
   try {
     const image = await db
-      .selectFrom("media")
-      .select(["id", "original_key", "resized_key", "status", "created_by"])
+      .selectFrom("user_images")
+      .select(["id", "original_key", "resized_key", "created_by"])
       .where("id", "=", imageId)
-      .where("created_by", "=", parseInt(id))
+      .where("building_id", "=", process.env.BUILDING_ID)
       .executeTakeFirst();
 
     if (!image) {
@@ -40,9 +40,9 @@ export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent) => {
     }
 
     await db
-      .deleteFrom("media")
-      .where("created_by", "=", parseInt(id))
+      .deleteFrom("user_images")
       .where("id", "=", imageId)
+      .where("building_id", "=", process.env.BUILDING_ID)
       .execute();
 
     return {
@@ -53,7 +53,7 @@ export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent) => {
     console.log("Error getting image", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Error getting image" }),
+      body: JSON.stringify({ error }),
     };
   }
 };

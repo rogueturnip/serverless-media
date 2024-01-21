@@ -14,7 +14,6 @@ const s3Client = new S3Client(s3Config);
 
 export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent) => {
   const { queryStringParameters } = event;
-  const { id = null } = event.pathParameters || {};
   const queryValidation = querySchema.safeParse(queryStringParameters || {});
   if (!queryValidation.success) {
     const error = queryValidation as { success: false; error: ZodError };
@@ -29,7 +28,7 @@ export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent) => {
 
   const mimeType = `image/${filetype.toLowerCase()}`;
   const imageId = uuidv4();
-  const key = `uploads/${id}/${imageId}-original.${filetype}`;
+  const key = `uploads/${process.env.BUILDING_ID}${imageId}-original.${filetype}`;
 
   try {
     const command = new PutObjectCommand({
@@ -38,7 +37,8 @@ export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent) => {
       ContentType: mimeType,
       Metadata: {
         "image-id": imageId,
-        "created-by": id,
+        "created-by": process.env.USER_ID,
+        "building-id": process.env.BUILDING_ID,
       },
     });
     const uploadURL = await getSignedUrl(s3Client, command, {

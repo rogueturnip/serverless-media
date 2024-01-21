@@ -9,7 +9,7 @@ export default {
         // id (created_by) is in the path parameter for simplicity
         // you probably want this from the authorizer instead and
         // pass it down in the context
-        path: "/media/{id}/upload",
+        path: "/images/upload",
       },
     },
   ],
