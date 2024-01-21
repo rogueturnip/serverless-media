@@ -2,11 +2,12 @@ import { Kysely, PostgresDialect } from "kysely";
 
 import { DB } from "@typesDef/db.d";
 import { Pool } from "pg";
-import dotenv from "dotenv";
+
+// import dotenv from "dotenv";
 
 // this is the Database interface we defined earlier
 
-dotenv.config();
+// dotenv.config();
 
 const dialect = new PostgresDialect({
   pool: new Pool({

@@ -18,6 +18,10 @@ const serverlessConfiguration: AWS = {
     },
     environment: {
       REGION: "us-east-1",
+      DATABASE_URL: "postgres://postgres:example@localhost:5555/alana",
+      SPID: "bb198d37-0f47-4cf7-8488-e930a439a92c",
+      BUILDINGID: "aeff3511-0e86-499a-8f2e-85c2a8b7cbd8",
+      USERID: "0c542d90-2d9a-4920-8c76-9277e313e5e9",
       BUCKET,
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
       NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",

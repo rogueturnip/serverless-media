@@ -13,7 +13,7 @@ export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent) => {
       .selectFrom("user_images")
       .select(["id", "original_key", "resized_key", "created_by"])
       .where("id", "=", imageId)
-      .where("building_id", "=", process.env.BUILDING_ID)
+      .where("building_id", "=", process.env.BUILDINGID)
       .executeTakeFirst();
 
     if (!image) {
@@ -42,7 +42,7 @@ export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent) => {
     await db
       .deleteFrom("user_images")
       .where("id", "=", imageId)
-      .where("building_id", "=", process.env.BUILDING_ID)
+      .where("building_id", "=", process.env.BUILDINGID)
       .execute();
 
     return {

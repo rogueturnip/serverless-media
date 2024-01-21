@@ -25,10 +25,10 @@ export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent) => {
       };
     }
     const image = await db
-      .selectFrom("media")
+      .selectFrom("user_images")
       .select(["id", "original_key", "resized_key", "created_by"])
       .where("id", "=", imageId)
-      .where("building_id", "=", process.env.BUILDING_ID)
+      .where("building_id", "=", process.env.BUILDINGID)
       .executeTakeFirst();
     console.log("image", image);
     let image_key = image.resized_key || image.original_key;

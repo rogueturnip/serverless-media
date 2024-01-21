@@ -28,7 +28,7 @@ export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent) => {
 
   const mimeType = `image/${filetype.toLowerCase()}`;
   const imageId = uuidv4();
-  const key = `uploads/${process.env.BUILDING_ID}${imageId}-original.${filetype}`;
+  const key = `uploads/${process.env.BUILDINGID}/${imageId}-original.${filetype}`;
 
   try {
     const command = new PutObjectCommand({
@@ -37,8 +37,8 @@ export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent) => {
       ContentType: mimeType,
       Metadata: {
         "image-id": imageId,
-        "created-by": process.env.USER_ID,
-        "building-id": process.env.BUILDING_ID,
+        "created-by": process.env.USERID,
+        "building-id": process.env.BUILDINGID,
       },
     });
     const uploadURL = await getSignedUrl(s3Client, command, {
